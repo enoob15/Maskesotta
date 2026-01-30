@@ -1,36 +1,159 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Maskesotta
 
-## Getting Started
+A charitable platform connecting generous donors with Minnesotans in need of Baklava masks for protection.
 
-First, run the development server:
+## 🎯 Project Overview
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Maskesotta is a Next.js web application that facilitates mask donations to Minnesota residents. The platform has two main user flows:
+
+1. **Recipients (Minnesota Residents)**: Register to receive a free Baklava mask
+2. **Donors**: Purchase masks ($25 each) that are shipped to verified recipients
+
+## 🏗️ Tech Stack
+
+- **Frontend**: Next.js 15+ (App Router), React, TypeScript
+- **Styling**: Tailwind CSS with custom design system
+- **Backend**: Next.js API Routes
+- **Database**: Supabase (PostgreSQL)
+- **Payment Processing**: Shopify Storefront API (planned)
+- **Deployment**: Vercel (planned)
+
+## 📋 Features
+
+### Current
+- ✅ Recipient registration form with Minnesota zip code validation
+- ✅ Dual-panel UI (Recipients vs Donors)
+- ✅ Supabase database integration
+- ✅ API endpoint for recipient registration
+- ✅ Responsive design with modern aesthetics
+
+### Planned
+- ⏳ Shopify integration for donations
+- ⏳ Recipient verification system
+- ⏳ Order fulfillment tracking
+- ⏳ Admin dashboard
+
+## 🗄️ Database Schema
+
+### `recipients` Table
+```sql
+- id (uuid, primary key)
+- created_at (timestamp)
+- name (text)
+- address_line1 (text)
+- city (text)
+- zip (text) -- Minnesota zip codes only
+- email (text)
+- status (text) -- 'waiting' or 'fulfilled'
+- donor_order_id (text) -- Links to Shopify order
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Getting Started
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Prerequisites
+- Node.js 18+
+- Supabase account
+- Environment variables (see `.env.local.example`)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Installation
 
-## Learn More
+```bash
+# Clone the repository
+git clone https://github.com/enoob15/Maskesotta.git
+cd Maskesotta
 
-To learn more about Next.js, take a look at the following resources:
+# Install dependencies
+npm install
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Set up environment variables
+cp .env.local.example .env.local
+# Edit .env.local with your Supabase credentials
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Run the development server
+npm run dev
+```
 
-## Deploy on Vercel
+Open [http://localhost:3000](http://localhost:3000) to view the application.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Environment Variables
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+## 📁 Project Structure
+
+```
+maskesotta/
+├── app/
+│   ├── api/register/      # Recipient registration endpoint
+│   ├── globals.css        # Global styles and design tokens
+│   ├── layout.tsx         # Root layout
+│   └── page.tsx           # Home page (dual-panel UI)
+├── components/
+│   └── RecipientForm.tsx  # Registration form component
+├── lib/
+│   ├── mn-zips.ts         # Minnesota zip code validation
+│   ├── supabase/          # Supabase client configuration
+│   └── utils.ts           # Utility functions
+├── supabase/
+│   └── schema.sql         # Database schema
+└── public/                # Static assets
+```
+
+## 🎨 Design System
+
+The application uses a custom design system with CSS variables for theming:
+
+- **Primary Color**: Amber gradient (`#f59e0b` to `#fbbf24`)
+- **Background**: Dark theme with ambient blur effects
+- **Typography**: System font stack
+- **Components**: Glassmorphic cards with subtle borders
+
+## 🔐 Security
+
+- Recipient data is validated server-side
+- Minnesota zip code verification prevents fraud
+- Supabase Row Level Security (RLS) policies should be configured
+- Email validation on registration
+
+## 📝 API Endpoints
+
+### `POST /api/register`
+Register a new recipient for a free mask.
+
+**Request Body:**
+```json
+{
+  "name": "John Doe",
+  "address": "123 Main St",
+  "city": "Minneapolis",
+  "zip": "55401",
+  "email": "john@example.com"
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Registration successful!"
+}
+```
+
+## 🚧 Development Status
+
+This project is in active development. See `.agent/task.md` for current task progress.
+
+## 📄 License
+
+[Add your license here]
+
+## 🤝 Contributing
+
+[Add contribution guidelines if applicable]
+
+## 📧 Contact
+
+For questions or support, please contact [your contact info].
